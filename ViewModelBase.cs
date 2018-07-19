@@ -19,7 +19,7 @@ namespace TinyMVVM
         protected void ThrowIfNotInDesignMode()
         {
             if(!IsInDesignMode)
-                throw new InvalidOperationException("This code is meant to be executed in design mode only");
+                throw new InvalidOperationException("This code is meant to be executed in design mode only.");
         }
     }
 }

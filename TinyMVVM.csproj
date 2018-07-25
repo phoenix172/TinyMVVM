@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DialogService.cs" />
+    <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\Markup\Converters\BooleanToVisibility.cs" />
     <Compile Include="Extensions\WindowManagerExtensions.cs" />
     <Compile Include="Interfaces\ICanClose.cs" />

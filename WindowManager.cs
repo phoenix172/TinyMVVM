@@ -11,11 +11,21 @@ namespace TinyMVVM
     public class WindowManager : IWindowManager
     {
         private readonly ConcurrentBag<Window> _windows = new ConcurrentBag<Window>();
+        // ReSharper disable once SuspiciousTypeConversion.Global
         public IReadOnlyCollection<Window> Windows => (IReadOnlyCollection<Window>)_windows;
 
         public WindowManager()
+            :this(new DefaultWindowFactory())
         {
+            
         }
+
+        public WindowManager(IWindowFactory windowFactory)
+        {
+            WindowFactory = windowFactory;
+        }
+
+        public IWindowFactory WindowFactory { get; set; }
 
         public void Show<TViewModel>(TViewModel viewModel) 
             where TViewModel : class
@@ -50,24 +60,20 @@ namespace TinyMVVM
         private Window CreateWindow<TViewModel>(TViewModel viewModel)
             where TViewModel : class
         {
-            var window = new Window
-            {
-                DataContext = viewModel,
-                Content = viewModel,
-                SizeToContent = SizeToContent.WidthAndHeight
-            };
-            
-            if (viewModel is ICanClose closable)
-                closable.CloseRequested += (sender, dialogResult) 
-                    => CloseWindow(viewModel, dialogResult);
-
-            WindowCreated?.Invoke(this, window);
-
+            var window = WindowFactory.Create(viewModel);
+            BindClosable(viewModel);
             _windows.Add(window);
+            WindowCreated?.Invoke(this, window);
             return window;
         }
 
+        private void BindClosable<TViewModel>(TViewModel viewModel) where TViewModel : class
+        {
+            if (viewModel is ICanClose closable)
+                closable.CloseRequested += (sender, dialogResult)
+                    => CloseWindow(viewModel, dialogResult);
+        }
+
         public event EventHandler<Window> WindowCreated;
-        
     }
 }

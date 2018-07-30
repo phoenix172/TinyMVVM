@@ -49,12 +49,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefaultWindowFactory.cs" />
     <Compile Include="DialogService.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\Markup\Converters\BooleanToVisibility.cs" />
     <Compile Include="Extensions\WindowManagerExtensions.cs" />
     <Compile Include="Interfaces\ICanClose.cs" />
     <Compile Include="Interfaces\IDialogService.cs" />
+    <Compile Include="Interfaces\IWindowFactory.cs" />
     <Compile Include="ObservableObject.cs" />
     <Compile Include="Utilities\ApexGrid.cs" />
     <Compile Include="Interfaces\IWindowManager.cs" />

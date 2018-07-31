@@ -53,6 +53,8 @@
     <Compile Include="DialogService.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\Markup\Converters\BooleanToVisibility.cs" />
+    <Compile Include="Extensions\Markup\MultiStyleExtension.cs" />
+    <Compile Include="Extensions\StyleExtensions.cs" />
     <Compile Include="Extensions\WindowManagerExtensions.cs" />
     <Compile Include="Interfaces\ICanClose.cs" />
     <Compile Include="Interfaces\IDialogService.cs" />

@@ -10,14 +10,13 @@ namespace TinyMVVM.Extensions
 {
     public static class WindowManagerExtensions
     {
-        public static void ConfigureMaximized<TViewModel>(this IWindowManager windowManager)
+        public static void Configure<TViewModel>(this IWindowManager windowManager, Action<Window> windowConfigAction)
         {
             windowManager.WindowCreated += (_, window) =>
             {
                 if (window.DataContext is TViewModel)
                 {
-                    window.SizeToContent = SizeToContent.Manual;
-                    window.WindowState = WindowState.Maximized;
+                    windowConfigAction(window);
                 }
             };
         }

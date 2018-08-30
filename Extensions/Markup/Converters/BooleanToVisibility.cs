@@ -10,6 +10,7 @@ namespace TinyMVVM.Extensions.Markup.Converters
     public class BooleanToVisibility : MarkupExtension, IValueConverter
     {
         public bool Invert { get; set; }
+        public Visibility FalseValue { get; set; } = Visibility.Collapsed;
 
         /// <summary>Converts a Boolean value to a <see cref="T:System.Windows.Visibility" /> enumeration value.</summary>
         /// <param name="value">The Boolean value to convert. This value can be a standard Boolean value or a nullable Boolean value.</param>
@@ -29,8 +30,8 @@ namespace TinyMVVM.Extensions.Markup.Converters
                 flag = nullable.HasValue && nullable.Value;
             }
             if(Invert)
-                return (object) (Visibility) (flag ? 2 : 0);
-            return (object) (Visibility) (flag ? 0 : 2);
+                return (object) (Visibility) (flag ? FalseValue : Visibility.Visible);
+            return (object) (Visibility) (flag ? Visibility.Visible : FalseValue);
         }
 
         /// <summary>Converts a <see cref="T:System.Windows.Visibility" /> enumeration value to a Boolean value.</summary>

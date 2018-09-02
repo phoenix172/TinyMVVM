@@ -49,6 +49,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\Mvvm.cs" />
+    <Compile Include="Commands\MvvmCommandBinding.cs" />
+    <Compile Include="Commands\MvvmCommandBindingCollection.cs" />
     <Compile Include="DefaultWindowFactory.cs" />
     <Compile Include="DialogService.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />

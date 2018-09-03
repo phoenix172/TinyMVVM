@@ -38,8 +38,8 @@ namespace TinyMVVM.Commands
         [Bindable(true)]
         public ICommand Command
         {
-            get { return (ICommand) GetValue(CommandProperty); }
-            set { SetValue(CommandProperty, value); }
+            get => (ICommand) GetValue(CommandProperty);
+            set => SetValue(CommandProperty, value);
         }
 
         #endregion
@@ -175,7 +175,7 @@ namespace TinyMVVM.Commands
             if (uiDependencyObject == null) throw new ArgumentNullException(nameof(uiDependencyObject));
             WritePreamble();
 
-            if (uiDependencyObject != _uiElement) return;
+            if (!ReferenceEquals(uiDependencyObject, _uiElement)) return;
 
             Dettach();
         }

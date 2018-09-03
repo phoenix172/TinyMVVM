@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Input;
@@ -18,8 +19,8 @@ namespace TinyMVVM.Commands
     ///     &lt;/u:MvvmCommandBindingCollection&gt;
     /// &lt;/u:Mvvm.CommandBindings&gt;
     /// </example>
-    [ContentProperty("Commands")]
-    public class MvvmCommandBindingCollection : Freezable
+    [ContentProperty(nameof(Commands))]
+    public class MvvmCommandBindingCollection : Freezable, IList
     {
         // Normally the inheritance context only goes to the logical and visual tree. But there are some additional
         // "Pointers" that exists to simplify XAML programming. The one that we use there is that the context is
@@ -78,7 +79,7 @@ namespace TinyMVVM.Commands
             if (uiDependencyObject == null) throw new ArgumentNullException(nameof(uiDependencyObject));
             WritePreamble();
 
-            if (uiDependencyObject != _uiElement) return;
+            if (!ReferenceEquals(uiDependencyObject, _uiElement)) return;
 
             Dettach();
         }
@@ -95,7 +96,6 @@ namespace TinyMVVM.Commands
 
         internal void AttachTo(UIElement uiDependencyObject)
         {
-            if (uiDependencyObject == null) throw new ArgumentNullException(nameof(uiDependencyObject));
             WritePreamble();
 
             if (_uiElement != null)
@@ -103,7 +103,7 @@ namespace TinyMVVM.Commands
                 Dettach();
             }
 
-            _uiElement = uiDependencyObject;
+            _uiElement = uiDependencyObject ?? throw new ArgumentNullException(nameof(uiDependencyObject));
 
             foreach (var command in Commands)
             {
@@ -115,5 +115,78 @@ namespace TinyMVVM.Commands
         {
             return new MvvmCommandBindingCollection();
         }
+
+        #region Implementation of IEnumerable
+
+        public IEnumerator GetEnumerator()
+        {
+            return Commands.GetEnumerator();
+        }
+
+        #endregion
+
+        #region Implementation of ICollection
+
+        public void CopyTo(Array array, int index)
+        {
+            Commands.CopyTo((MvvmCommandBinding[])array, index);
+        }
+
+        public int Count => Commands.Count;
+
+        public object SyncRoot => (Commands as ICollection).SyncRoot;
+
+        public bool IsSynchronized => (Commands as ICollection).IsSynchronized;
+
+        #endregion
+
+        #region Implementation of IList
+
+        public int Add(object value)
+        {
+            return (Commands as IList).Add(value);
+        }
+
+        public bool Contains(object value)
+        {
+            return (Commands as IList).Contains(value);
+        }
+
+        public void Clear()
+        {
+            Commands.Clear();
+        }
+
+        public int IndexOf(object value)
+        {
+            return (Commands as IList).IndexOf(value);
+        }
+
+        public void Insert(int index, object value)
+        {
+            (Commands as IList).Insert(index, value);
+        }
+
+        public void Remove(object value)
+        {
+            (Commands as IList).Remove(value);
+        }
+
+        public void RemoveAt(int index)
+        {
+            (Commands as IList).RemoveAt(index);
+        }
+
+        public object this[int index]
+        {
+            get => Commands[index];
+            set => (Commands as IList)[index] = value;
+        }
+
+        public bool IsReadOnly => (Commands as IList).IsReadOnly;
+
+        public bool IsFixedSize => (Commands as IList).IsFixedSize;
+
+        #endregion
     }
 }

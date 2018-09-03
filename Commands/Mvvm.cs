@@ -1,27 +1,33 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Windows;
 
 namespace TinyMVVM.Commands
 {
     public static class Mvvm
     {
-        public static readonly DependencyProperty CommandBindingsProperty = DependencyProperty.RegisterAttached(
-            "CommandBindings", typeof(MvvmCommandBindingCollection), typeof(Mvvm),
-            new PropertyMetadata(null, OnCommandBindingsChanged));
+        internal static readonly DependencyProperty CommandBindingsProperty = DependencyProperty.RegisterAttached(
+            "CommandBindingsInternal", typeof(MvvmCommandBindingCollection), typeof(Mvvm),
+            new PropertyMetadata(OnCommandBindingsChanged));
 
         [AttachedPropertyBrowsableForType(typeof(UIElement))]
         public static MvvmCommandBindingCollection GetCommandBindings(UIElement target)
         {
             if (target == null) throw new ArgumentNullException(nameof(target));
 
-            return (MvvmCommandBindingCollection)target.GetValue(CommandBindingsProperty);
+            var commandBindings = (MvvmCommandBindingCollection)target.GetValue(CommandBindingsProperty);
+            if (commandBindings != null) return commandBindings;
+
+            commandBindings = new MvvmCommandBindingCollection();
+            target.SetValue(CommandBindingsProperty, commandBindings);
+
+            return commandBindings;
         }
 
-        public static void SetCommandBindings(UIElement target, MvvmCommandBindingCollection value)
+        public static void SetCommandBindings(UIElement target, MvvmCommandBindingCollection commandBindings)
         {
-            if (target == null) throw new ArgumentNullException(nameof(target));
-
-            target.SetValue(CommandBindingsProperty, value);
+            if(target == null ) throw new ArgumentNullException(nameof(target));
+            target.SetValue(CommandBindingsProperty, commandBindings);
         }
 
         private static void OnCommandBindingsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

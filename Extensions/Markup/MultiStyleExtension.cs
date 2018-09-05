@@ -18,8 +18,6 @@ namespace TinyMVVM.Extensions.Markup
         {
             Guard.NotNull(inputStyleKeys, nameof(inputStyleKeys));
             _styleKeys = inputStyleKeys.Split(new []{' '}, StringSplitOptions.RemoveEmptyEntries);
-            if(_styleKeys.Length == 0)
-                throw new ArgumentException("No input resource keys specified.", nameof(inputStyleKeys));
         }
 
         public bool IncludeGlobalStyle { get; set; }

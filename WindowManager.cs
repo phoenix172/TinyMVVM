@@ -8,7 +8,7 @@ using TinyMVVM.Interfaces;
 
 namespace TinyMVVM
 {
-    public class WindowManager : IWindowManager
+    public class WindowManager
     {
         private readonly ConcurrentBag<Window> _windows = new ConcurrentBag<Window>();
         // ReSharper disable once SuspiciousTypeConversion.Global
